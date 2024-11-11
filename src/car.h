@@ -36,7 +36,4 @@ class car{
     /*Receiver Function*/
         void readCoord();
         void updateMovement();
-
-    /*Transmitter Functions*/
-
 };
