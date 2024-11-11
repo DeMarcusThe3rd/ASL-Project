@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "car.h"
+#include "Servo.h"
 
 /*
  *   Hex to Binary Cheat Sheet
@@ -57,4 +58,20 @@ void turn(int t, int PWML, int PWMR){
         send_to_driver(0xA, PWML, PWMR);
         delay(t);
     }
+}
+
+void servoLeft(){
+    for (int pos = 0; pos <= 360; pos += 10) { // goes from 0 degrees to 180 degrees
+        // in steps of 1 degree
+        servo.write(pos);              // tell servo to go to position in variable 'pos'
+        delay(5);                       // waits 15 ms for the servo to reach the position
+  }
+}
+
+void servoRight(){
+    for (int pos = 180; pos >= 0; pos -= 10) { // goes from 0 degrees to 180 degrees
+        // in steps of 1 degree
+        servo.write(pos);              // tell servo to go to position in variable 'pos'
+        delay(5);                       // waits 15 ms for the servo to reach the position
+  }
 }
