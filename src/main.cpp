@@ -1,11 +1,24 @@
 #include <Arduino.h>
 #include "Servo.h"
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
 #include "car.h"
 
+//intialize classes and variables
+car Car;
 Servo servo;
+RF24 radio (9,10); //CE, CSN
+const byte address [6] = "00001";
+int coordinate[11];
 
+//setup code that runs once
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin (9600); 
+  radio.begin();
+  radio.openReadingPipe(0,address);
+  radio.setPALevel(RF24_PA_MIN) ;
+  radio.startListening();
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
@@ -16,13 +29,5 @@ void setup() {
 }
 
 void loop() {
-  forward(5000,255);
-  backward(5000,255);
-  turn(0,255,-255); //turn left
-  turn(0,-255,255); //turn right
-  stop(0,0);
-  turn(0,255,255); //forward
-  turn(0,-255,-255); //backwards
-  servoLeft();
-  //servoRight();
+  Car.readCoord();
 }
