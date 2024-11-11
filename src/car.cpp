@@ -1,14 +1,13 @@
 #include <Arduino.h>
 #include "car.h"
-#include "Servo.h"
 
 /*
  *   Hex to Binary Cheat Sheet
  *  ==========================================
- *   A = 1010 -> both motors forward
- *   9 = 1001 -> right forward, left backward
- *   6 = 0110 -> left forward, right backward
- *   5 = 0101 -> both motors backward
+ *   A = 1010 -> both motors forward 9
+ *   9 = 1001 -> right forward, left backward 6
+ *   6 = 0110 -> left forward, right backward 9
+ *   5 = 0101 -> both motors backward A
  */
 
 /* accepts input as a user defined literal hex operator and converts to 4 bit binary, each bit for each of the 4 motor driver pins  */
@@ -23,55 +22,39 @@ void send_to_driver(unsigned char bit, int PWML, int PWMR){
 }
 
 /* forward for time t in milliseconds */
-void forward(int t, int PWM){
-    send_to_driver(0xA, PWM, PWM);
-    delay(t);
+void forward(int PWM){
+    send_to_driver(0x5, PWM, PWM);
+    //delay(t);
 }
 
 /* backward for time t in milliseconds */
-void backward(int t, int PWM){
-    send_to_driver(0x5, PWM, PWM);
-    delay(t);
+void backward(int PWM){
+    send_to_driver(0xA, PWM, PWM);
+    //delay(t);
 }
 
 /* stop for time t in milliseconds */
-void stop(int t, int PWM){
+void stop(int PWM){
     send_to_driver(0x0, PWM, PWM);
-    delay(t);
+    //delay(t);
 }
 
 /* turns the vehicle for time t in milliseconds */
-void turn(int t, int PWML, int PWMR){
+void turn(int PWML, int PWMR){
     if(PWML < 0){   //left motor backward, right motor forward
-        send_to_driver(0x9, -PWML, PWMR);
-        delay(t);
+        send_to_driver(0x6, -PWML, PWMR);
+        //delay(t);
     }
     else if(PWMR < 0){  //right motor backward, left motor forward
-        send_to_driver(0x6, PWML, -PWMR);
-        delay(t);
+        send_to_driver(0x9, PWML, -PWMR);
+        //delay(t);
     }
     else if((PWML < 0) && (PWMR < 0)){  //both motor backward
         send_to_driver(0x5, -PWML, -PWMR);
-        delay(t);
+        //delay(t);
     }
     else{   //both motor forward
         send_to_driver(0xA, PWML, PWMR);
-        delay(t);
+        //delay(t);
     }
-}
-
-void servoLeft(){
-    for (int pos = 0; pos <= 360; pos += 10) { // goes from 0 degrees to 180 degrees
-        // in steps of 1 degree
-        servo.write(pos);              // tell servo to go to position in variable 'pos'
-        delay(5);                       // waits 15 ms for the servo to reach the position
-  }
-}
-
-void servoRight(){
-    for (int pos = 180; pos >= 0; pos -= 10) { // goes from 0 degrees to 180 degrees
-        // in steps of 1 degree
-        servo.write(pos);              // tell servo to go to position in variable 'pos'
-        delay(5);                       // waits 15 ms for the servo to reach the position
-  }
 }
