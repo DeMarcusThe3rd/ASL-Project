@@ -4,10 +4,10 @@
 /*
  *   Hex to Binary Cheat Sheet
  *  ==========================================
- *   A = 1010 -> both motors forward 9
- *   9 = 1001 -> right forward, left backward 6
- *   6 = 0110 -> left forward, right backward 9
- *   5 = 0101 -> both motors backward A
+ *   5 = 0101 -> both motors forwards 
+ *   A = 1010 -> both motors backwards 
+ *   9 = 1001 -> left forward, right backward 
+ *   6 = 0110 -> right forward, left backward 
  */
 
 /* accepts input as a user defined literal hex operator and converts to 4 bit binary, each bit for each of the 4 motor driver pins  */
@@ -50,11 +50,11 @@ void turn(int PWML, int PWMR){
         //delay(t);
     }
     else if((PWML < 0) && (PWMR < 0)){  //both motor backward
-        send_to_driver(0x5, -PWML, -PWMR);
+        send_to_driver(0xA, -PWML, -PWMR);
         //delay(t);
     }
     else{   //both motor forward
-        send_to_driver(0xA, PWML, PWMR);
+        send_to_driver(0x5, PWML, PWMR);
         //delay(t);
     }
 }
